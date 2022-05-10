@@ -35,7 +35,7 @@ contract Shop{
         _;
     }
 
-  function getProductsNumber()public view returns( Product  [] memory){
+  function getProductsNumber()public view returns( uint){
         return productsList.length;
     }
    
