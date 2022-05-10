@@ -39,7 +39,7 @@ contract Shop{
         return productsList.length;
     }
    
-   function addProduct(string memory name, uint price,uint quantity,uint claimValue,uint claimTrials)public isOwner{
+   function addProduct(string memory name, uint price,uint quantity,uint claimValue,uint claimTrials)public {
             productsList.push(Product(productsList.length+1,name,price,quantity,claimValue,claimTrials));
     }
 
@@ -107,7 +107,7 @@ function claim(uint productId) public returns(string memory){
       
     }
 
-    function send() public {
+    function sendContractBalanceToOwner() public {
               payable(owner).transfer(address(this).balance);
           }
 
