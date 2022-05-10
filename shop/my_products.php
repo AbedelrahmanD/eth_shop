@@ -7,14 +7,11 @@
 <div class="container">
     <div id="jsProductGrid" class="row">
         <script>
-            getProducts();
+            getClientProducts();
         </script>
     </div>
 
 </div>
 
-
-
-</div>
 
 <?php include_once "partials/footer.php"; ?>

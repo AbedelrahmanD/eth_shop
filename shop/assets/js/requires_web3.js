@@ -1,8 +1,11 @@
 /* fixed functions starts*/
 async function loadWeb3() {
+
     if (window.ethereum) {
         window.web3 = new Web3(window.ethereum);
+
         window.ethereum.enable();
+
     }
 }
 
@@ -12,13 +15,14 @@ async function loadContract() {
 
 async function getCurrentAccount() {
     const accounts = await window.web3.eth.getAccounts();
-    return accounts[0]; r
+    return accounts[0];
 }
 
 async function load() {
     await loadWeb3();
     window.contract = await loadContract();
     const account = await getCurrentAccount();
+    console.log("selected account is " + account);
 }
 load();
         /* fixed functions ends*/
