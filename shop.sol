@@ -22,6 +22,8 @@ contract Shop{
     address public owner;
     Product[] public productsList;
     mapping(address=>Order[]) public orders;
+    mapping(address=>uint) public ordersNumber;
+    
 
 
       constructor() {
@@ -33,8 +35,8 @@ contract Shop{
         _;
     }
 
-  function getProductsList()public view returns( Product  [] memory){
-        return productsList;
+  function getProductsNumber()public view returns( Product  [] memory){
+        return productsList.length;
     }
    
    function addProduct(string memory name, uint price,uint quantity,uint claimValue,uint claimTrials)public isOwner{
@@ -66,6 +68,7 @@ contract Shop{
               productsList[i].quantity--;
               //add product to the client
               orders[msg.sender].push(Order(msg.sender,productsList[i],block.timestamp));
+              ordersNumber[msg.sender]++;
               return "done";
             }
           }
@@ -80,7 +83,7 @@ function claim(uint productId) public returns(string memory){
         require(orders[msg.sender][i].product.claimTrials>0,"Trials are finished");
 
         //check if  contract balance is > the product claim value
-        require(address(this).balance>orders[msg.sender][i].product.claimValue);
+        require(address(this).balance>orders[msg.sender][i].product.claimValue,"not enoght ammount in the contract");
 
         payable(msg.sender).transfer(orders[msg.sender][i].product.claimValue);
               //decremant claim trails
@@ -104,7 +107,7 @@ function claim(uint productId) public returns(string memory){
       
     }
 
-    function send() public payable{
+    function send() public {
               payable(owner).transfer(address(this).balance);
           }
 
