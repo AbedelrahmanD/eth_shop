@@ -76,17 +76,19 @@ contract Shop{
 function claim(uint productId) public returns(string memory){
     for(uint i=0;i<orders[msg.sender].length;i++){
       if(orders[msg.sender][i].product.id==productId){
-        //check if trials >0
+                //check if trials >0
         require(orders[msg.sender][i].product.claimTrials>0,"Trials are finished");
+
         //check if  contract balance is > the product claim value
         require(address(this).balance>orders[msg.sender][i].product.calimValue);
+
         payable(msg.sender).transfer(orders[msg.sender][i].product.calimValue);
               //decremant claim trails
         orders[msg.sender][i].product.claimTrials--;
-         return "success";
+         return "Claim was successfull";
             }
           }
-     return "fail";
+     return "You don't own the product";
 }
     function getOrdersByClientAddress()public view returns(Order[] memory){
         return orders[msg.sender];
