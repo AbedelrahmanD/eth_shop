@@ -22,7 +22,7 @@ contract Shop{
     address private owner;
     Product[] public productsList;
     mapping(address=>Order[]) public orders;
-
+    mapping(address=>uint) public ordersNumber;
 
       constructor() {
         owner = msg.sender; 
@@ -33,8 +33,8 @@ contract Shop{
         _;
     }
 
-  function getProductsList()public view returns( Product  [] memory){
-        return productsList;
+  function getProductsNumber()public view returns( uint){
+        return productsList.length;
     }
    
    function addProduct(string memory name, uint price,uint quantity,uint claimValue,uint claimTrials)public isOwner{
@@ -66,6 +66,7 @@ contract Shop{
               productsList[i].quantity--;
               //add product to the client
               orders[msg.sender].push(Order(msg.sender,productsList[i],block.timestamp));
+              ordersNumber[msg.sender]++;
               return "done";
             }
           }
