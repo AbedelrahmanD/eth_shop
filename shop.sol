@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity  0.8.0;
+pragma solidity  ^0.8.0;
 
 contract Shop{
 
@@ -8,7 +8,7 @@ contract Shop{
          string name;
          uint price;
          uint quantity;
-         uint calimValue;
+         uint claimValue;
          uint claimTrials;
          }
 
@@ -19,10 +19,10 @@ contract Shop{
          }
 
 
-    address private owner;
+    address public owner;
     Product[] public productsList;
     mapping(address=>Order[]) public orders;
-    mapping(address=>uint) public ordersNumber;
+
 
       constructor() {
         owner = msg.sender; 
@@ -33,8 +33,8 @@ contract Shop{
         _;
     }
 
-  function getProductsNumber()public view returns( uint){
-        return productsList.length;
+  function getProductsList()public view returns( Product  [] memory){
+        return productsList;
     }
    
    function addProduct(string memory name, uint price,uint quantity,uint claimValue,uint claimTrials)public isOwner{
@@ -66,7 +66,6 @@ contract Shop{
               productsList[i].quantity--;
               //add product to the client
               orders[msg.sender].push(Order(msg.sender,productsList[i],block.timestamp));
-              ordersNumber[msg.sender]++;
               return "done";
             }
           }
@@ -81,9 +80,9 @@ function claim(uint productId) public returns(string memory){
         require(orders[msg.sender][i].product.claimTrials>0,"Trials are finished");
 
         //check if  contract balance is > the product claim value
-        require(address(this).balance>orders[msg.sender][i].product.calimValue);
+        require(address(this).balance>orders[msg.sender][i].product.claimValue);
 
-        payable(msg.sender).transfer(orders[msg.sender][i].product.calimValue);
+        payable(msg.sender).transfer(orders[msg.sender][i].product.claimValue);
               //decremant claim trails
         orders[msg.sender][i].product.claimTrials--;
          return "Claim was successfull";
